@@ -1,8 +1,7 @@
 import { useState, useCallback } from "react";
-import { FaGoogle, FaFacebook } from "react-icons/fa";
 import { MdEmail, MdLock } from "react-icons/md";
-
-const Login = () => {
+import logo from "../../../public/images/logo.png";
+const AdminLogin = () => {
   // State initialization for email and password
   const [state, setState] = useState({ email: "", password: "" });
 
@@ -25,12 +24,10 @@ const Login = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-400 via-indigo-500 to-purple-500">
       <div className="w-full max-w-lg p-8 bg-white rounded-xl shadow-lg">
-        <h2 className="text-3xl font-extrabold text-center text-gray-800">
-          Welcome Back
-        </h2>
-        <p className="mt-2 text-sm text-center text-gray-600">
-          Please log in to your account
-        </p>
+        {/* Image */}
+        <div className=" flex justify-center">
+          <img className=" w-[20rem]" src={logo} alt="logoimage" />
+        </div>
         <form onSubmit={submit} className="mt-8 space-y-4">
           {/* Email Input */}
           <div className="relative">
@@ -72,41 +69,9 @@ const Login = () => {
             Log In
           </button>
         </form>
-
-        <p className="mt-6 text-sm text-center text-gray-600">
-          Don't have an account?
-          <a href="/register" className="text-indigo-500 underline">
-            Sign Up
-          </a>
-        </p>
-
-        {/* Divider */}
-        <div className="flex items-center my-6">
-          <hr className="w-full border-gray-300" />
-          <span className="px-2 text-gray-500">Or</span>
-          <hr className="w-full border-gray-300" />
-        </div>
-
-        {/* Social Buttons */}
-        <div className="flex justify-center gap-6">
-          <button
-            className="flex items-center justify-center w-12 h-12 text-white bg-gradient-to-r from-red-500 to-orange-500 rounded-full shadow-md hover:scale-105 transform transition-transform duration-200"
-            onClick={() => alert("Google Signup")}
-            aria-label="Sign in with Google"
-          >
-            <FaGoogle className="text-lg" />
-          </button>
-          <button
-            className="flex items-center justify-center w-12 h-12 text-white bg-gradient-to-r from-blue-600 to-blue-500 rounded-full shadow-md hover:scale-105 transform transition-transform duration-200"
-            onClick={() => alert("Facebook Signup")}
-            aria-label="Sign in with Facebook"
-          >
-            <FaFacebook className="text-lg" />
-          </button>
-        </div>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default AdminLogin;
