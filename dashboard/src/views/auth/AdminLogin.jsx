@@ -20,7 +20,6 @@ const AdminLogin = () => {
   // Form submit handler
   const submit = (e) => {
     e.preventDefault();
-
     // Dispatch action with state as payload
     dispatch(admin_login(state));
   };
