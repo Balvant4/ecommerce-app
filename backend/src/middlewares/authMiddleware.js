@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
-import { asyncHandler } from "../utils/asyncHandler";
-import ApiError from "../utils/ApiError";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import ApiError from "../utils/ApiError.js";
 
 const authMiddleware = asyncHandler(async (req, res, next) => {
   const { accessToken } = req.cookies;
