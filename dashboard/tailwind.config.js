@@ -5,7 +5,11 @@ export default {
     "./src/**/*.{js,jsx,ts,tsx}", // Include all JS/JSX/TS/TSX files in the `src` directory
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        bgmain: "#cdcae9",
+      },
+    },
   },
   plugins: [],
 };

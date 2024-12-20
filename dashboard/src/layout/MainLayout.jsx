@@ -4,11 +4,11 @@ import Sidebar from "./Sidebar";
 
 function MainLayout() {
   return (
-    <div>
+    <div className=" bg-bgmain w-full min-h-screen">
       <Header />
       <Sidebar />
-      <div>
-        Main Layout <Outlet />
+      <div className=" ml-0 lg:ml-[260px] pt-[95px] transition-all">
+        <Outlet />
       </div>
     </div>
   );
