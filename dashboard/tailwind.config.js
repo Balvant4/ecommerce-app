@@ -8,6 +8,8 @@ export default {
     extend: {
       colors: {
         bgmain: "#cdcae9",
+        sidnavbg: "#F5F5F5",
+        hdnavbg: "#b1addf",
       },
     },
   },
