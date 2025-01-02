@@ -10,6 +10,7 @@ export default {
         bgmain: "#cdcae9",
         sidnavbg: "#F5F5F5",
         hdnavbg: "#b1addf",
+        chartbgcolor: "#6a5fdf",
       },
     },
   },

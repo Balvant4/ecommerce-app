@@ -14,10 +14,9 @@ function Header({ showSidebar, setShowSidebar }) {
         </div>
         <div className=" hidden md:block">
           <input
+            className=" px-4 py-2 bg-[#283046] border border-gray-700 rounded-md text-[#ded2d6] placeholder-gray-500 shadow-md transition-all duration-200 focus:outline-none  overflow-hidden"
             type="text"
-            name="search"
-            placeholder="search"
-            className=" px-3 py-2 outline-none border bg-transparent border-slate-700 rounded-md text-black focus:border-indigo-500 overflow-hidden"
+            placeholder="Search"
           />
         </div>
         <div className=" flex justify-center items-center gap-8 relative">
