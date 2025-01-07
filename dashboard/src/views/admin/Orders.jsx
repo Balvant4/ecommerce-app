@@ -1,6 +1,8 @@
+import { MdOutlineFileDownload } from "react-icons/md";
 import { useState } from "react";
-import { FaDownload } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import Dropdown from "../../components/Dropdown";
+import SearchBar from "../../components/SearchBar";
 import Pagination from "../../components/Pagination";
 
 function Orders() {
@@ -9,107 +11,82 @@ function Orders() {
   const [parPage, setParPage] = useState(5);
   const [show, setShow] = useState(false);
 
-  const orders = [
-    {
-      id: "34344",
-      price: "$34.99",
-      paymentStatus: "Pending",
-      orderStatus: "Processing",
-    },
-    // Add more orders here as needed
-  ];
-
-  const tableHeaderClasses = "py-3 font-bold border-b border-slate-700";
-  const tableCellClasses = "py-3 font-medium border-b border-slate-700";
+  const handleOrderSearch = (query) => {
+    console.log("Order Search:", query);
+    // Add order-specific search logic here
+  };
 
   return (
-    <div className="px-2 lg:px-7 pt-5">
-      <div className="w-full p-4 bg-chartbgcolor rounded-md">
-        {/* Controls */}
-        <div className="flex justify-between items-center">
-          <select
-            onChange={(e) => setParPage(parseInt(e.target.value, 10))}
-            className="px-4 py-2 bg-chartbgcolor border border-slate-700 rounded-md text-[#d0d2d6] focus:outline-none focus:border-indigo-500"
-          >
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="20">20</option>
-          </select>
-          <input
-            className="px-4 py-2 bg-[#283046] border border-gray-700 rounded-md text-[#ded2d6] placeholder-gray-500 shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            type="text"
-            placeholder="Search"
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
+    <div className="lg:px-7 px-2 w-full pt-5">
+      <div className="w-full p-4 rounded-md bg-chartbgcolor">
+        <div className="flex justify-between px-2">
+          <Dropdown setParPage={setParPage} />
+          <SearchBar
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+            handleSearch={handleOrderSearch}
+            placeholder="Search orders..."
+            className={``}
           />
         </div>
 
-        {/* Table */}
-        <div className="relative mt-5 overflow-x-auto">
-          <div className="text-sm text-[#d0d2d6] uppercase">
-            <div className="flex justify-between items-center">
-              <div className={`w-[25%] ${tableHeaderClasses}`}>Order ID</div>
-              <div className={`w-[13%] ${tableHeaderClasses}`}>Price</div>
-              <div className={`w-[18%] ${tableHeaderClasses}`}>
-                Payment Status
+        <div className=" relative mt-5 overflow-x-auto">
+          <div className="w-full text-sm text-left bg-chartbgcolor">
+            <div className=" text-sm text-white uppercase border-b  border-b-slate-700">
+              <div className=" flex justify-between items-center">
+                <div className="py-3 w-[25%] font-bold">Order id</div>
+                <div className="py-3 w-[13%] font-bold">Price</div>
+                <div className="py-3 w-[18%] font-bold">Payment Status</div>
+                <div className="py-3 w-[18%] font-bold">Order Status</div>
+                <div className="py-3 w-[18%] font-bold">Action</div>
+                <div className="py-3 w-[8%] font-bold text-xl">
+                  <MdOutlineFileDownload />
+                </div>
               </div>
-              <div className={`w-[18%] ${tableHeaderClasses}`}>
-                Order Status
+            </div>
+
+            <div className=" text-sm text-white">
+              <div className=" flex justify-between items-center">
+                <div className="py-3 w-[25%] font-bold">1254</div>
+                <div className="py-3 w-[13%] font-bold">$856</div>
+                <div className="py-3 w-[18%] font-bold">Pending</div>
+                <div className="py-3 w-[18%] font-bold">Pending</div>
+                <div className="py-3 w-[18%] font-bold">
+                  <Link>View</Link>
+                </div>
+                <div
+                  onClick={(e) => setShow(!show)}
+                  className="py-3 w-[8%] font-bold text-xl cursor-pointer"
+                >
+                  <MdOutlineFileDownload />
+                </div>
               </div>
-              <div className={`w-[18%] ${tableHeaderClasses}`}>Action</div>
-              <div className={`w-[8%] ${tableHeaderClasses}`}>
-                <FaDownload />
+
+              <div
+                className={
+                  show
+                    ? " block border-b border-slate-700 bg-slate-800"
+                    : " hidden"
+                }
+              >
+                <div className=" flex justify-start items-start border-b border-slate-700 pl-3">
+                  <div className="py-3 w-[25%] font-bold">#34343</div>
+                  <div className="py-3 w-[13%] font-bold">$56</div>
+                  <div className="py-3 w-[18%] font-bold">Pending</div>
+                  <div className="py-3 w-[18%] font-bold">Pending</div>
+                  <div className="py-3 w-[18%] font-bold">Action</div>
+                </div>
               </div>
             </div>
           </div>
-
-          {/* Table Rows */}
-          {orders.map((order) => (
-            <div
-              key={order.id}
-              className="flex justify-between items-start bg-gray-900 hover:bg-gray-800 text-white px-2 rounded-md"
-            >
-              <div className={`w-[25%] ${tableCellClasses}`}>{order.id}</div>
-              <div className={`w-[13%] ${tableCellClasses}`}>{order.price}</div>
-              <div className={`w-[18%] ${tableCellClasses}`}>
-                {order.paymentStatus}
-              </div>
-              <div className={`w-[18%] ${tableCellClasses}`}>
-                {order.orderStatus}
-              </div>
-              <div className={`w-[18%] ${tableCellClasses}`}>
-                <Link className="text-blue-500 hover:underline">View</Link>
-              </div>
-              <div
-                onClick={() => setShow(!show)}
-                className={`w-[8%] ${tableCellClasses} cursor-pointer`}
-              >
-                <FaDownload />
-              </div>
-            </div>
-          ))}
-
-          {/* Expanded Content */}
-          {show && (
-            <div className="bg-[#8288ed] border-b border-slate-700">
-              <div className={`flex items-start`}>
-                <div className={`w-[25%] ${tableCellClasses}`}>
-                  Extra Order Info
-                </div>
-                {/* Add more details as necessary */}
-              </div>
-            </div>
-          )}
         </div>
-
-        {/* Pagination */}
-        <div className="w-full flex justify-end mt-4">
+        <div className=" flex justify-end mt-4 mr-5">
           <Pagination
             pageNumber={currentPage}
             setPageNumber={setCurrentPage}
             totalItem={50}
             parPage={parPage}
-            showItem={3}
+            showItem={1}
           />
         </div>
       </div>
