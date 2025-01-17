@@ -10,71 +10,75 @@ function Sellers() {
   const [searchValue, setSearchValue] = useState("");
   const [categorySearchValue, setCategorySearchValue] = useState("");
   const [parPage, setParPage] = useState(5);
-  const [show, setShow] = useState(false);
 
   const handleOrderSearch = (query) => {
     console.log("Order Search:", query);
-    // Add order-specific search logic here
-  };
-
-  const handleCategorySearch = (query) => {
-    console.log("Category Search:", query);
   };
 
   return (
-    <div className="lg:px-7 px-4 w-full pt-5 sm:flex gap-3 ">
-      <div className="  w-full p-4 rounded-md bg-chartbgcolor ">
-        {/* Header section */}
+    <div className="lg:px-7 px-4 w-full pt-5 sm:flex gap-3">
+      <div className="w-full p-4 rounded-md bg-slate-800 shadow-lg">
+        {/* Header Section */}
         <div className="flex flex-wrap justify-between items-center gap-4 px-2">
           <Dropdown setParPage={setParPage} />
           <SearchBar
             searchValue={searchValue}
             setSearchValue={setSearchValue}
             handleSearch={handleOrderSearch}
-            placeholder="Search"
-            className=""
+            placeholder="Search sellers..."
           />
         </div>
 
-        {/* Body section right side */}
-
-        <div className="mt-5 ">
-          <div className="overflow-x-auto rounded-xl ">
-            <table className="table-auto w-full text-left  text-white">
-              <thead className=" bg-chartbgcolor">
-                <tr className=" uppercase border-b border-b-gray-700">
-                  <th className="px-4 py-2  ">No</th>
-                  <th className="px-4 py-2 ">Image</th>
-                  <th className="px-4 py-2 ">Name</th>
-                  <th className="px-4 py-2 ">Shop Name</th>
-                  <th className="px-4 py-2 ">Payment Status</th>
-                  <th className="px-4 py-2 ">Email</th>
-                  <th className="px-4 py-2 ">Division</th>
-                  <th className="px-4 py-2 ">District</th>
-                  <th className="px-4 py-2 ">Action</th>
+        {/* Sellers Table */}
+        <div className="mt-5">
+          <div className="overflow-x-auto rounded-md">
+            <table className="table-auto w-full text-left text-white border-collapse">
+              <thead className="bg-slate-700 text-sm uppercase font-semibold">
+                <tr>
+                  <th className="px-4 py-3">No</th>
+                  <th className="px-4 py-3">Image</th>
+                  <th className="px-4 py-3">Name</th>
+                  <th className="px-4 py-3">Shop Name</th>
+                  <th className="px-4 py-3">Payment Status</th>
+                  <th className="px-4 py-3">Email</th>
+                  <th className="px-4 py-3">Division</th>
+                  <th className="px-4 py-3">District</th>
+                  <th className="px-4 py-3">Action</th>
                 </tr>
               </thead>
 
-              <tbody>
+              <tbody className="text-sm">
                 {[1, 2, 3, 4].map((d, i) => (
-                  <tr key={i} className=" hover:bg-chartbgcolor">
-                    <td className="px-4 py-2 ">{d}</td>
-                    <td className="px-4 py-2 ">
+                  <tr
+                    key={i}
+                    className={`hover:bg-slate-600 ${
+                      i % 2 === 0 ? "bg-slate-800" : "bg-slate-700"
+                    }`}
+                  >
+                    <td className="px-4 py-3">{d}</td>
+                    <td className="px-4 py-3">
                       <img
-                        className=" w-[45px] h-[45px]"
+                        className="w-12 h-12 rounded-md object-cover"
                         src={`http://localhost:5173/images/category/${d}.jpg`}
-                        alt="CategoryImages"
+                        alt={`Category ${d}`}
                       />
                     </td>
-                    <td className="px-4 py-2 ">Kazi Ariyan</td>
-                    <td className="px-4 py-2 ">Easy</td>
-                    <td className="px-4 py-2 ">Pending</td>
-                    <td className="px-4 py-2 ">balvantkumarsingh3@gmail.com</td>
-                    <td className="px-4 py-2 ">Bihar</td>
-                    <td className="px-4 py-2 ">Chapra</td>
-                    <td className="px-4 py-2 ">
-                      <div className=" flex justify-start items-center gap-4">
-                        <Link className=" p-2 bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50">
+                    <td className="px-4 py-3">Kazi Ariyan</td>
+                    <td className="px-4 py-3">Easy</td>
+                    <td className="px-4 py-3">
+                      <span className="px-3 py-[6px] bg-yellow-500 text-black rounded-md">
+                        Pending
+                      </span>
+                    </td>
+                    <td className="px-4 py-3">balvantkumarsingh3@gmail.com</td>
+                    <td className="px-4 py-3">Bihar</td>
+                    <td className="px-4 py-3">Chapra</td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        <Link
+                          to="#"
+                          className="p-2 bg-green-500 rounded-md text-white hover:bg-green-600 transition"
+                        >
                           <FaEye />
                         </Link>
                       </div>
@@ -87,7 +91,7 @@ function Sellers() {
         </div>
 
         {/* Pagination */}
-        <div className="flex justify-end mt-4 mr-5">
+        <div className="flex justify-end mt-6">
           <Pagination
             pageNumber={currentPage}
             setPageNumber={setCurrentPage}

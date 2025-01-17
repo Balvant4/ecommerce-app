@@ -17,100 +17,81 @@ function Orders() {
 
   return (
     <div className="lg:px-7 px-4 w-full pt-5">
-      <div className="w-full p-4 rounded-md bg-chartbgcolor">
+      <div className="w-full p-6 bg-gray-900 rounded-lg shadow-lg">
         {/* Header Section */}
-        <div className="flex flex-wrap justify-between items-center gap-4 px-2">
+        <div className="flex flex-wrap justify-between items-center gap-4">
           <Dropdown setParPage={setParPage} />
           <SearchBar
             searchValue={searchValue}
             setSearchValue={setSearchValue}
             handleSearch={handleOrderSearch}
             placeholder="Search orders..."
-            className=""
           />
         </div>
 
-        {/* Table Section */}
-        <div className="relative mt-5 overflow-x-auto">
-          <div className="w-full text-sm text-left bg-chartbgcolor">
-            {/* Table Header */}
-            <div className="text-sm text-white uppercase border-b border-b-slate-700">
-              <div className="flex flex-wrap justify-between items-center gap-2">
-                <div className="py-3 w-[25%] sm:w-[20%] md:w-[15%] font-bold">
+        {/* Orders Table */}
+        <div className="mt-6 overflow-x-auto">
+          <table className="w-full text-sm text-left text-gray-400">
+            <thead className="bg-gray-800 text-gray-200">
+              <tr>
+                <th scope="col" className="py-3 px-4">
                   Order ID
-                </div>
-                <div className="py-3 w-[13%] sm:w-[12%] md:w-[10%] font-bold">
+                </th>
+                <th scope="col" className="py-3 px-4">
                   Price
-                </div>
-                <div className="py-3 w-[18%] sm:w-[16%] md:w-[15%] font-bold">
+                </th>
+                <th scope="col" className="py-3 px-4">
                   Payment Status
-                </div>
-                <div className="py-3 w-[18%] sm:w-[16%] md:w-[15%] font-bold">
+                </th>
+                <th scope="col" className="py-3 px-4">
                   Order Status
-                </div>
-                <div className="py-3 w-[18%] sm:w-[20%] md:w-[25%] font-bold">
+                </th>
+                <th scope="col" className="py-3 px-4">
                   Action
-                </div>
-                <div className="py-3 w-[8%] sm:w-[5%] md:w-[5%] text-xl font-bold text-center">
+                </th>
+                <th scope="col" className="py-3 px-4 text-center">
                   <MdOutlineFileDownload />
-                </div>
-              </div>
-            </div>
-
-            {/* Table Body */}
-            <div className="text-sm text-white">
-              <div className="flex flex-wrap justify-between items-center gap-2">
-                <div className="py-3 w-[25%] sm:w-[20%] md:w-[15%] font-bold">
-                  1254
-                </div>
-                <div className="py-3 w-[13%] sm:w-[12%] md:w-[10%] font-bold">
-                  $856
-                </div>
-                <div className="py-3 w-[18%] sm:w-[16%] md:w-[15%] font-bold">
-                  Pending
-                </div>
-                <div className="py-3 w-[18%] sm:w-[16%] md:w-[15%] font-bold">
-                  Pending
-                </div>
-                <div className="py-3 w-[18%] sm:w-[20%] md:w-[25%] font-bold">
-                  <Link to="#">View</Link>
-                </div>
-                <div
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-gray-700 hover:bg-gray-800">
+                <td className="py-3 px-4">1254</td>
+                <td className="py-3 px-4">$856</td>
+                <td className="py-3 px-4">Pending</td>
+                <td className="py-3 px-4">Pending</td>
+                <td className="py-3 px-4 ">
+                  <Link
+                    to="/admin/dashboard/order/details/1"
+                    className="text-blue-500 hover:text-blue-300"
+                  >
+                    View
+                  </Link>
+                </td>
+                <td
                   onClick={() => setShow(!show)}
-                  className="py-3 w-[8%] sm:w-[5%] md:w-[5%] text-xl font-bold text-center cursor-pointer"
+                  className="py-3 px-4 text-center cursor-pointer"
                 >
                   <MdOutlineFileDownload />
-                </div>
-              </div>
-
-              {/* Dropdown Row */}
+                </td>
+              </tr>
+              {/* Expandable Row */}
               {show && (
-                <div className="block border-b border-slate-700 bg-slate-800">
-                  <div className="flex flex-wrap justify-start items-center gap-2 border-b border-slate-700 pl-3">
-                    <div className="py-3 w-[25%] sm:w-[20%] md:w-[15%] font-bold">
-                      #34343
-                    </div>
-                    <div className="py-3 w-[13%] sm:w-[12%] md:w-[10%] font-bold">
-                      $56
-                    </div>
-                    <div className="py-3 w-[18%] sm:w-[16%] md:w-[15%] font-bold">
-                      Pending
-                    </div>
-                    <div className="py-3 w-[18%] sm:w-[16%] md:w-[15%] font-bold">
-                      Pending
-                    </div>
-                    <div className="py-3 w-[18%] sm:w-[20%] md:w-[25%] font-bold">
-                      Action
-                    </div>
-                  </div>
-                </div>
+                <tr className="bg-gray-800">
+                  <td className="py-3 px-4">34343</td>
+                  <td className="py-3 px-4">$56</td>
+                  <td className="py-3 px-4">Pending</td>
+                  <td className="py-3 px-4">Pending</td>
+                  <td className="py-3 px-4">Action</td>
+                  <td className="py-3 px-4 text-center">...</td>
+                </tr>
               )}
-            </div>
-          </div>
+            </tbody>
+          </table>
         </div>
 
         {/* Pagination */}
-        <div className="flex justify-end mt-4 mr-5">
+        <div className="flex justify-end mt-4">
           <Pagination
             pageNumber={currentPage}
             setPageNumber={setCurrentPage}
