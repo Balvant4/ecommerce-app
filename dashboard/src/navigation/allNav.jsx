@@ -54,7 +54,7 @@ export const allNav = [
     title: "Seller Request",
     icon: <VscGitPullRequestNewChanges />,
     role: "admin",
-    path: "/admin/dashboard/seller-reques",
+    path: "/admin/dashboard/seller-request",
   },
   {
     id: 8,
@@ -63,6 +63,8 @@ export const allNav = [
     role: "admin",
     path: "/admin/dashboard/seller-chat",
   },
+
+  // Seller Route start here
   {
     id: 9,
     title: "Dashboard",

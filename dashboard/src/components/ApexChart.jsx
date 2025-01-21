@@ -66,7 +66,7 @@ function ApexChart() {
         data: [20, 30, 25, 40, 39, 50, 60, 81, 75, 55, 45, 35], // Sample data for revenue
       },
       {
-        name: "Sellers",
+        name: "Sales",
         data: [10, 20, 15, 30, 29, 40, 50, 61, 55, 35, 25, 15], // Sample data for sellers
       },
     ],

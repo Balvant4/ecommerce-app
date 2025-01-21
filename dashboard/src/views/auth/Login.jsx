@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import Input from "../../components/Input";
 import SocialButtons from "../../components/SocialButton";
 import { MdEmail, MdLock } from "react-icons/md";
+import MainButton from "../../components/MainButton";
 
 const Login = () => {
   const [state, setState] = useState({ email: "", password: "" });
@@ -39,12 +40,7 @@ const Login = () => {
             value={state.password}
             onChange={inputHandle}
           />
-          <button
-            type="submit"
-            className="w-full px-4 py-3 text-white font-medium bg-indigo-500 rounded-lg hover:bg-indigo-600 transition duration-300"
-          >
-            Log In
-          </button>
+          <MainButton text="Login" />
         </form>
         <p className="mt-6 text-sm text-center text-gray-600">
           Don't have an account?{" "}
