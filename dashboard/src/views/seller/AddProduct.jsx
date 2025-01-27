@@ -1,56 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import MainButton from "../../components/MainButton";
 import Input from "../../components/Input";
 import SelectField from "../../components/SelectField";
 import TextareaField from "../../components/TextareaField";
 
 function AddProduct() {
-  // State for form fields
-  const [formData, setFormData] = useState({
-    productname: "",
-    brandname: "",
-    category: "",
-    productstock: "",
-    price: "",
-    discount: "",
-    description: "",
-    image: null,
-  });
-
-  // Handle input changes
-  const handleChange = (e) => {
-    const { name, value, type, files } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: type === "file" ? files[0] : value,
-    }));
-  };
-
-  // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // Example validation
-    if (!formData.productname || !formData.brandname) {
-      alert("Product Name and Brand Name are required!");
-      return;
-    }
-
-    // Handle form data (e.g., send to API)
-    console.log("Form submitted:", formData);
-
-    // Optionally reset the form
-    setFormData({
-      productname: "",
-      brandname: "",
-      category: "",
-      productstock: "",
-      price: "",
-      discount: "",
-      description: "",
-      image: null,
-    });
-  };
+  // Example dynamic category data (could come from backend in the future)
+  const books = [
+    { id: 1, category: "History" },
+    { id: 2, category: "Science" },
+    { id: 3, category: "Fiction" },
+    { id: 4, category: "Biography" },
+    { id: 5, category: "Philosophy" },
+  ];
 
   return (
     <div className="px-6 py-8 sm:px-10 lg:px-12">
@@ -62,7 +24,7 @@ function AddProduct() {
         </div>
 
         {/* Form section */}
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form className="space-y-8">
           {/* Input grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <Input
@@ -71,8 +33,6 @@ function AddProduct() {
               type="text"
               placeholder="Product Name"
               label="Product Name"
-              value={formData.productname}
-              onChange={handleChange}
             />
             <Input
               className="border border-gray-700 rounded-lg bg-gray-900 text-white shadow-sm focus:ring-blue-500 focus:border-blue-500"
@@ -80,22 +40,18 @@ function AddProduct() {
               type="text"
               placeholder="Brand Name"
               label="Brand Name"
-              value={formData.brandname}
-              onChange={handleChange}
             />
             <SelectField
               label="Category"
               name="category"
               className="border border-gray-700 rounded-lg bg-gray-900 text-white shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              value={formData.category}
-              onChange={handleChange}
             >
               <option value="">Select a category</option>
-              <option value="electronics">Electronics</option>
-              <option value="fashion">Fashion</option>
-              <option value="home-appliances">Home Appliances</option>
-              <option value="books">Books</option>
-              <option value="beauty">Beauty</option>
+              {books.map((book) => (
+                <option key={book.id} value={book.category}>
+                  {book.category}
+                </option>
+              ))}
             </SelectField>
             <Input
               className="border border-gray-700 rounded-lg bg-gray-900 text-white shadow-sm focus:ring-blue-500 focus:border-blue-500"
@@ -103,8 +59,6 @@ function AddProduct() {
               type="number"
               placeholder="Product Stock"
               label="Product Stock"
-              value={formData.productstock}
-              onChange={handleChange}
             />
             <Input
               className="border border-gray-700 rounded-lg bg-gray-900 text-white shadow-sm focus:ring-blue-500 focus:border-blue-500"
@@ -112,8 +66,6 @@ function AddProduct() {
               type="number"
               placeholder="Price"
               label="Price"
-              value={formData.price}
-              onChange={handleChange}
             />
             <Input
               className="border border-gray-700 rounded-lg bg-gray-900 text-white shadow-sm focus:ring-blue-500 focus:border-blue-500"
@@ -121,8 +73,6 @@ function AddProduct() {
               type="number"
               placeholder="% Discount"
               label="Discount"
-              value={formData.discount}
-              onChange={handleChange}
             />
           </div>
 
@@ -132,8 +82,6 @@ function AddProduct() {
             label="Description"
             name="description"
             className="border border-gray-700 rounded-lg bg-gray-900 text-white shadow-sm focus:ring-blue-500 focus:border-blue-500"
-            value={formData.description}
-            onChange={handleChange}
           />
 
           {/* Image upload section */}
@@ -149,7 +97,6 @@ function AddProduct() {
               id="image"
               name="image"
               className="text-sm text-gray-300 bg-transparent border border-gray-500 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer hover:border-blue-300"
-              onChange={handleChange}
             />
           </div>
 

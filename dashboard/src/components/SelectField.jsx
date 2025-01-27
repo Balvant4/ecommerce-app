@@ -8,7 +8,7 @@ const SelectField = ({ label, name, value, onChange, children }) => (
       name={name}
       value={value}
       onChange={onChange}
-      className="mt-2 block w-full border border-gray-700 rounded-md bg-gray-800 text-white shadow-sm focus:ring-[#6a5fdf] focus:border-[#6a5fdf] px-4 py-2"
+      className="mt-2 block w-full border border-gray-700 rounded-md bg-gray-900 text-white shadow-sm focus:ring-[#6a5fdf] focus:border-[#6a5fdf] px-4 py-3"
     >
       {children}
     </select>

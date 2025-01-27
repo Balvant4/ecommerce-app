@@ -40,7 +40,7 @@ const Login = () => {
             value={state.password}
             onChange={inputHandle}
           />
-          <MainButton text="Login" />
+          <MainButton text="Login" className=" w-full" />
         </form>
         <p className="mt-6 text-sm text-center text-gray-600">
           Don't have an account?{" "}

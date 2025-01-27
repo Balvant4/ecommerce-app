@@ -2,6 +2,7 @@ import { useState } from "react";
 import Input from "../../components/Input";
 import SocialButtons from "../../components/SocialButton";
 import { MdEmail, MdLock, MdPerson } from "react-icons/md";
+import MainButton from "../../components/MainButton";
 
 const Register = () => {
   const [state, setState] = useState({ name: "", email: "", password: "" });
@@ -47,12 +48,7 @@ const Register = () => {
             value={state.password}
             onChange={inputHandle}
           />
-          <button
-            type="submit"
-            className="w-full px-4 py-3 text-white font-medium bg-indigo-500 rounded-lg hover:bg-indigo-600 transition duration-300"
-          >
-            Sign Up
-          </button>
+          <MainButton text="Sign Up" className=" w-full" />
         </form>
         <p className="mt-6 text-sm text-center text-gray-600">
           Already have an account?{" "}
