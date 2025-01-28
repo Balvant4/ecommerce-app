@@ -1,30 +1,128 @@
-import React from "react";
+import React, { useState } from "react";
+import Select from "react-select";
 import MainButton from "../../components/MainButton";
 import Input from "../../components/Input";
-import SelectField from "../../components/SelectField";
 import TextareaField from "../../components/TextareaField";
 
 function AddProduct() {
-  // Example dynamic category data (could come from backend in the future)
+  // Example dynamic category data
   const books = [
-    { id: 1, category: "History" },
-    { id: 2, category: "Science" },
-    { id: 3, category: "Fiction" },
-    { id: 4, category: "Biography" },
-    { id: 5, category: "Philosophy" },
+    { value: "History", label: "History" },
+    { value: "Science", label: "Science" },
+    { value: "Fiction", label: "Fiction" },
+    { value: "Biography", label: "Biography" },
+    { value: "Philosophy", label: "Philosophy" },
   ];
+
+  const [state, setState] = useState({
+    productname: "",
+    brandname: "",
+    category: null, // Set initial category to null
+    productstock: "",
+    price: "",
+    discount: "",
+    description: "",
+    image: null, // This will hold the image file
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSelectChange = (selectedOption) => {
+    setState((prevState) => ({
+      ...prevState,
+      category: selectedOption || null, // Reset category state
+    }));
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]; // Get the selected file
+    setState((prevState) => ({
+      ...prevState,
+      image: file, // Store the file in state
+    }));
+  };
+
+  const handlesubmit = (e) => {
+    e.preventDefault(); // Prevent form submission (page reload)
+    console.log(state); // For debugging: Check what data is being submitted
+
+    // Here, you would send the form data to the server (e.g., an API call)
+
+    // Reset form fields after submission
+    setState({
+      productname: "",
+      brandname: "",
+      category: null, // Reset category
+      productstock: "",
+      price: "",
+      discount: "",
+      description: "",
+      image: null, // Reset image field
+    });
+
+    // Manually reset the file input field
+    document.getElementById("image").value = null;
+  };
+
+  // Custom styles for react-select
+  const customStyles = {
+    control: (provided) => ({
+      ...provided,
+      backgroundColor: "#1f2937", // Tailwind gray-900
+      border: "1px solid #374151", // Tailwind gray-700
+      borderRadius: "0.375rem", // Rounded-lg
+      boxShadow: "none",
+      padding: "5px",
+      color: "white", // Add text color
+      "&:hover": {
+        borderColor: "#4b5563", // Tailwind gray-600
+      },
+    }),
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: "#1f2937", // Tailwind gray-900
+      borderRadius: "0.375rem",
+      border: "1px solid #374151", // Tailwind gray-700
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isFocused ? "#374151" : "#1f2937", // Hover gray-700
+      color: "#f9fafb", // Tailwind gray-50
+      cursor: "pointer",
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: "#f9fafb", // Tailwind gray-50 for selected value
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      color: "#9ca3af", // Tailwind gray-400 for placeholder
+    }),
+    input: (provided) => ({
+      ...provided,
+      color: "#f9fafb", // Tailwind gray-50 for typed text
+    }),
+  };
 
   return (
     <div className="px-6 py-8 sm:px-10 lg:px-12">
       <div className="p-6 rounded-lg bg-chartbgcolor shadow-md">
         {/* Header section */}
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-semibold text-white">Add Product</h1>
-          <MainButton text="All Products" className="w-40" />
+          <h1 className="sm:text-3xl text-xl sm:font-semibold font-bold text-white">
+            Add Product
+          </h1>
+          <MainButton text="All Products" className="sm:w-40 w-32 " />
         </div>
 
         {/* Form section */}
-        <form className="space-y-8">
+        <form className="space-y-8" onSubmit={handlesubmit}>
           {/* Input grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <Input
@@ -33,6 +131,8 @@ function AddProduct() {
               type="text"
               placeholder="Product Name"
               label="Product Name"
+              onChange={handleChange}
+              value={state.productname}
             />
             <Input
               className="border border-gray-700 rounded-lg bg-gray-900 text-white shadow-sm focus:ring-blue-500 focus:border-blue-500"
@@ -40,25 +140,33 @@ function AddProduct() {
               type="text"
               placeholder="Brand Name"
               label="Brand Name"
+              onChange={handleChange}
+              value={state.brandname}
             />
-            <SelectField
-              label="Category"
-              name="category"
-              className="border border-gray-700 rounded-lg bg-gray-900 text-white shadow-sm focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="">Select a category</option>
-              {books.map((book) => (
-                <option key={book.id} value={book.category}>
-                  {book.category}
-                </option>
-              ))}
-            </SelectField>
+            <div className="relative">
+              <label className="block text-white text-sm font-medium mb-3">
+                Category
+              </label>
+              <Select
+                options={books}
+                styles={customStyles}
+                onChange={handleSelectChange}
+                placeholder="Select a category"
+                value={
+                  state.category
+                    ? books.find((option) => option.value === state.category)
+                    : null
+                } // Update selected value
+              />
+            </div>
             <Input
               className="border border-gray-700 rounded-lg bg-gray-900 text-white shadow-sm focus:ring-blue-500 focus:border-blue-500"
               name="productstock"
               type="number"
               placeholder="Product Stock"
               label="Product Stock"
+              onChange={handleChange}
+              value={state.productstock}
             />
             <Input
               className="border border-gray-700 rounded-lg bg-gray-900 text-white shadow-sm focus:ring-blue-500 focus:border-blue-500"
@@ -66,6 +174,8 @@ function AddProduct() {
               type="number"
               placeholder="Price"
               label="Price"
+              onChange={handleChange}
+              value={state.price}
             />
             <Input
               className="border border-gray-700 rounded-lg bg-gray-900 text-white shadow-sm focus:ring-blue-500 focus:border-blue-500"
@@ -73,11 +183,15 @@ function AddProduct() {
               type="number"
               placeholder="% Discount"
               label="Discount"
+              onChange={handleChange}
+              value={state.discount}
             />
           </div>
 
           {/* Description field */}
           <TextareaField
+            onChange={handleChange}
+            value={state.description}
             placeholder="Product Description"
             label="Description"
             name="description"
@@ -97,6 +211,7 @@ function AddProduct() {
               id="image"
               name="image"
               className="text-sm text-gray-300 bg-transparent border border-gray-500 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer hover:border-blue-300"
+              onChange={handleImageChange}
             />
           </div>
 
