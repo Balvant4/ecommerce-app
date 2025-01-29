@@ -3,6 +3,7 @@ import Select from "react-select";
 import MainButton from "../../components/MainButton";
 import Input from "../../components/Input";
 import TextareaField from "../../components/TextareaField";
+import { Link } from "react-router-dom";
 
 function AddProduct() {
   // Example dynamic category data
@@ -118,7 +119,9 @@ function AddProduct() {
           <h1 className="sm:text-3xl text-xl sm:font-semibold font-bold text-white">
             Add Product
           </h1>
-          <MainButton text="All Products" className="sm:w-40 w-32 " />
+          <Link to="/seller/dashboard/all-product">
+            <MainButton text="All Products" className="sm:w-40 w-32 " />
+          </Link>
         </div>
 
         {/* Form section */}

@@ -7,7 +7,7 @@ import { MdDelete } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 import Pagination from "../../components/Pagination";
 
-function AllProduct() {
+function DiscountProduct() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
   const [parPage, setParPage] = useState(5);
@@ -20,7 +20,7 @@ function AllProduct() {
 
   return (
     <div className="lg:px-7 px-2 w-full pt-5 flex flex-col gap-5 ">
-      <h1 className="text-2xl font-semibold text-black">All Products</h1>
+      <h1 className="text-2xl font-semibold text-black">Discount Product</h1>
       <div className="w-full p-6 bg-slate-800 rounded-lg shadow-lg">
         {/* Header Section */}
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 px-2">
@@ -156,4 +156,4 @@ function AllProduct() {
   );
 }
 
-export default AllProduct;
+export default DiscountProduct;
