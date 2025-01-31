@@ -9,6 +9,7 @@ const Input = ({
   value,
   onChange,
   className,
+  id,
 }) => {
   return (
     <div className="relative">
@@ -18,7 +19,7 @@ const Input = ({
       {Icon && <Icon className="absolute left-3 top-3 text-gray-400 text-lg" />}
       <input
         name={name}
-        id={name}
+        id={id}
         type={type}
         placeholder={placeholder}
         required

@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import Select from "react-select";
 import MainButton from "../../components/MainButton";
 import Input from "../../components/Input";
-import TextareaField from "../../components/TextareaField";
 import { Link } from "react-router-dom";
+import { IoMdCloseCircle, IoMdImages } from "react-icons/io";
+import Select from "react-select";
+import TextareaField from "../../components/TextareaField";
 
 function AddProduct() {
-  // Example dynamic category data
-  const books = [
+  const options = [
     { value: "History", label: "History" },
     { value: "Science", label: "Science" },
     { value: "Fiction", label: "Fiction" },
@@ -16,216 +16,210 @@ function AddProduct() {
   ];
 
   const [state, setState] = useState({
-    productname: "",
-    brandname: "",
-    category: null, // Set initial category to null
-    productstock: "",
-    price: "",
-    discount: "",
+    name: "",
     description: "",
-    image: null, // This will hold the image file
+    discount: "",
+    price: "",
+    brand: "",
+    stock: "",
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setState((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
+  const [category, setCategory] = useState(null);
+  const [images, setImages] = useState([]);
+  const [imageShow, setImageShow] = useState([]);
 
   const handleSelectChange = (selectedOption) => {
-    setState((prevState) => ({
-      ...prevState,
-      category: selectedOption || null, // Reset category state
-    }));
+    setCategory(selectedOption);
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0]; // Get the selected file
-    setState((prevState) => ({
-      ...prevState,
-      image: file, // Store the file in state
-    }));
-  };
-
-  const handlesubmit = (e) => {
-    e.preventDefault(); // Prevent form submission (page reload)
-    console.log(state); // For debugging: Check what data is being submitted
-
-    // Here, you would send the form data to the server (e.g., an API call)
-
-    // Reset form fields after submission
+  const inputHandle = (e) => {
     setState({
-      productname: "",
-      brandname: "",
-      category: null, // Reset category
-      productstock: "",
-      price: "",
-      discount: "",
-      description: "",
-      image: null, // Reset image field
+      ...state,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const imageHandle = (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length > 0) {
+      setImages([...images, ...files]);
+      const imageUrl = files.map((file) => ({
+        url: URL.createObjectURL(file),
+      }));
+      setImageShow([...imageShow, ...imageUrl]);
+    }
+  };
+
+  const changeImage = (img, index) => {
+    if (img) {
+      let tempUrl = [...imageShow];
+      let tempImages = [...images];
+
+      tempImages[index] = img;
+      tempUrl[index] = { url: URL.createObjectURL(img) };
+
+      setImageShow(tempUrl);
+      setImages(tempImages);
+    }
+  };
+
+  const removeImage = (i) => {
+    setImages(images.filter((_, index) => index !== i));
+    setImageShow(imageShow.filter((_, index) => index !== i));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log({
+      ...state,
+      category: category ? category.value : "",
+      images,
     });
 
-    // Manually reset the file input field
-    document.getElementById("image").value = null;
-  };
-
-  // Custom styles for react-select
-  const customStyles = {
-    control: (provided) => ({
-      ...provided,
-      backgroundColor: "#1f2937", // Tailwind gray-900
-      border: "1px solid #374151", // Tailwind gray-700
-      borderRadius: "0.375rem", // Rounded-lg
-      boxShadow: "none",
-      padding: "5px",
-      color: "white", // Add text color
-      "&:hover": {
-        borderColor: "#4b5563", // Tailwind gray-600
-      },
-    }),
-    menu: (provided) => ({
-      ...provided,
-      backgroundColor: "#1f2937", // Tailwind gray-900
-      borderRadius: "0.375rem",
-      border: "1px solid #374151", // Tailwind gray-700
-    }),
-    option: (provided, state) => ({
-      ...provided,
-      backgroundColor: state.isFocused ? "#374151" : "#1f2937", // Hover gray-700
-      color: "#f9fafb", // Tailwind gray-50
-      cursor: "pointer",
-    }),
-    singleValue: (provided) => ({
-      ...provided,
-      color: "#f9fafb", // Tailwind gray-50 for selected value
-    }),
-    placeholder: (provided) => ({
-      ...provided,
-      color: "#9ca3af", // Tailwind gray-400 for placeholder
-    }),
-    input: (provided) => ({
-      ...provided,
-      color: "#f9fafb", // Tailwind gray-50 for typed text
-    }),
+    // Reset all form fields after submission
+    setState({
+      name: "",
+      description: "",
+      discount: "",
+      price: "",
+      brand: "",
+      stock: "",
+    });
+    setCategory(""); // Reset category selection
+    setImages([]); // Clear image files
+    setImageShow([]); // Clear preview images
   };
 
   return (
-    <div className="px-6 py-8 sm:px-10 lg:px-12">
-      <div className="p-6 rounded-lg bg-chartbgcolor shadow-md">
-        {/* Header section */}
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="sm:text-3xl text-xl sm:font-semibold font-bold text-white">
-            Add Product
-          </h1>
-          <Link to="/seller/dashboard/all-product">
-            <MainButton text="All Products" className="sm:w-40 w-32 " />
-          </Link>
+    <div className="px-2 lg:px-7 pt-5">
+      <div className="w-full p-4 bg-slate-800 rounded-md">
+        <div className="flex justify-between items-center pb-4">
+          <h1 className="text-xl font-semibold text-white">Add Product</h1>
+          <div>
+            <Link to={"/seller/dashboard/all-product"}>
+              <MainButton text="All Product" />
+            </Link>
+          </div>
         </div>
 
-        {/* Form section */}
-        <form className="space-y-8" onSubmit={handlesubmit}>
-          {/* Input grid */}
+        {/* Form */}
+        <form className="space-y-8" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <Input
-              className="border border-gray-700 rounded-lg bg-gray-900 text-white shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              name="productname"
-              type="text"
-              placeholder="Product Name"
+              className=" px-2"
+              onChange={inputHandle}
+              value={state.name}
               label="Product Name"
-              onChange={handleChange}
-              value={state.productname}
+              placeholder="Product Name"
+              name="name"
+              type="text"
             />
             <Input
-              className="border border-gray-700 rounded-lg bg-gray-900 text-white shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              name="brandname"
-              type="text"
-              placeholder="Brand Name"
+              className=" px-2"
+              onChange={inputHandle}
+              value={state.brand}
               label="Brand Name"
-              onChange={handleChange}
-              value={state.brandname}
+              placeholder="Brand Name"
+              name="brand"
+              type="text"
             />
-            <div className="relative">
+            <Input
+              className=" px-2"
+              onChange={inputHandle}
+              value={state.price}
+              label="Price"
+              placeholder="Price"
+              name="price"
+              type="number"
+            />
+            <Input
+              className=" px-2"
+              onChange={inputHandle}
+              value={state.stock}
+              label="Product Stock"
+              placeholder="Product Stock"
+              name="stock"
+              type="number"
+            />
+            <Input
+              className=" px-2"
+              onChange={inputHandle}
+              value={state.discount}
+              label="Discount"
+              placeholder="% Discount"
+              name="discount"
+              type="number"
+            />
+
+            <div>
               <label className="block text-white text-sm font-medium mb-3">
                 Category
               </label>
               <Select
-                options={books}
-                styles={customStyles}
+                options={options}
                 onChange={handleSelectChange}
+                value={category}
                 placeholder="Select a category"
-                value={
-                  state.category
-                    ? books.find((option) => option.value === state.category)
-                    : null
-                } // Update selected value
+                styles={{
+                  control: (base) => ({
+                    ...base,
+                    paddingTop: "5px", // Adjust as needed
+                    paddingBottom: "5px",
+                  }),
+                }}
               />
             </div>
-            <Input
-              className="border border-gray-700 rounded-lg bg-gray-900 text-white shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              name="productstock"
-              type="number"
-              placeholder="Product Stock"
-              label="Product Stock"
-              onChange={handleChange}
-              value={state.productstock}
-            />
-            <Input
-              className="border border-gray-700 rounded-lg bg-gray-900 text-white shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              name="price"
-              type="number"
-              placeholder="Price"
-              label="Price"
-              onChange={handleChange}
-              value={state.price}
-            />
-            <Input
-              className="border border-gray-700 rounded-lg bg-gray-900 text-white shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              name="discount"
-              type="number"
-              placeholder="% Discount"
-              label="Discount"
-              onChange={handleChange}
-              value={state.discount}
-            />
           </div>
 
-          {/* Description field */}
           <TextareaField
-            onChange={handleChange}
+            onChange={inputHandle}
             value={state.description}
-            placeholder="Product Description"
             label="Description"
+            placeholder="Description"
             name="description"
-            className="border border-gray-700 rounded-lg bg-gray-900 text-white shadow-sm focus:ring-blue-500 focus:border-blue-500"
           />
 
-          {/* Image upload section */}
-          <div className="flex flex-col items-center justify-center py-8 px-6 bg-gray-900 rounded-lg shadow-inner">
+          {/* Image Section */}
+          <div className="grid w-full mb-4 gap-3 sm:gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {imageShow.map((img, i) => (
+              <div className="h-[180px] relative" key={i}>
+                <label htmlFor={`image-${i}`}>
+                  <img
+                    className="w-full h-full rounded-sm"
+                    src={img.url}
+                    alt=""
+                  />
+                </label>
+                <input
+                  type="file"
+                  id={`image-${i}`}
+                  className="hidden"
+                  onChange={(e) => changeImage(e.target.files[0], i)}
+                />
+                <span
+                  onClick={() => removeImage(i)}
+                  className="p-2 z-10 cursor-pointer bg-slate-500 hover:shadow-lg hover:shadow-slate-400/50 text-white absolute top-1 right-1 rounded-full"
+                >
+                  <IoMdCloseCircle />
+                </span>
+              </div>
+            ))}
             <label
-              htmlFor="image"
-              className="text-lg font-medium text-white mb-4 cursor-pointer hover:text-blue-400"
+              htmlFor="images"
+              className="flex flex-col items-center justify-center h-[180px] w-full cursor-pointer border border-dashed border-gray-400 hover:border-red-500 transition-colors"
             >
-              Upload Product Image
+              <IoMdImages className="text-3xl text-white mb-2" />
+              <span className="text-white">Select Image</span>
             </label>
             <input
               type="file"
-              id="image"
-              name="image"
-              className="text-sm text-gray-300 bg-transparent border border-gray-500 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer hover:border-blue-300"
-              onChange={handleImageChange}
+              id="images"
+              multiple
+              className="hidden"
+              onChange={imageHandle}
             />
           </div>
-
-          {/* Submit button */}
-          <div className="text-right">
-            <MainButton
-              text="Add Product"
-              className="w-full px-6 py-3 text-lg"
-              type="submit"
-            />
-          </div>
+          <MainButton text="Add Product" className="w-full" type="submit" />
         </form>
       </div>
     </div>

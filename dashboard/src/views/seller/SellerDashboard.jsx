@@ -2,7 +2,6 @@ import AdminPageCards from "../../components/AdminPageCards";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { BsCart4 } from "react-icons/bs";
 import { MdProductionQuantityLimits } from "react-icons/md";
-import { FaPeopleGroup } from "react-icons/fa6";
 import ApexChart from "../../components/ApexChart";
 import { Link } from "react-router-dom";
 

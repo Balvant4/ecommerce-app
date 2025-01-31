@@ -71,7 +71,10 @@ function AllProduct() {
                     <td className="px-4 py-2">456</td>
                     <td className="px-4 py-2">
                       <div className="flex justify-start items-center gap-4">
-                        <Link className="p-2 bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50">
+                        <Link
+                          to={`/seller/dashboard/edit-product/11`}
+                          className="p-2 bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50"
+                        >
                           <FaRegEdit />
                         </Link>
                         <Link className="p-2 bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50">
@@ -126,7 +129,10 @@ function AllProduct() {
                   </p>
                 </div>
                 <div className="mt-4 flex gap-4">
-                  <Link className="p-2 bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50">
+                  <Link
+                    to={`/seller/dashboard/edit-product/12`}
+                    className="p-2 bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50"
+                  >
                     <FaRegEdit className=" text-white text-xl" />
                   </Link>
                   <Link className="p-2 bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50">

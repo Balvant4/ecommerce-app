@@ -5,6 +5,7 @@ const TextareaField = ({
   onChange,
   className,
   placeholder,
+  id,
 }) => (
   <div>
     <label htmlFor={name} className="block text-white">
@@ -12,12 +13,12 @@ const TextareaField = ({
     </label>
     <textarea
       placeholder={placeholder}
-      id={name}
+      id={id}
       name={name}
       value={value}
       onChange={onChange}
-      rows="4"
-      className={`mt-2 block w-full border border-gray-700 rounded-md bg-gray-800 text-white shadow-sm focus:ring-[#6a5fdf] focus:border-[#6a5fdf] px-4 py-2 ${className}`}
+      rows="2"
+      className={`mt-2 w-full px-2 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none ${className}`}
     />
   </div>
 );
