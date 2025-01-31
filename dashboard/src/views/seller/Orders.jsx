@@ -54,7 +54,10 @@ function Orders() {
                     <td className="px-4 py-2 w-[25%]">Pending</td>
                     <td className="px-4 py-2 w-[25%]">
                       <div className="flex justify-start items-center gap-4">
-                        <Link className="p-2 bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50">
+                        <Link
+                          to={"/seller/dashboard/order/details/5"}
+                          className="p-2 bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50"
+                        >
                           <FaEye />
                         </Link>
                       </div>

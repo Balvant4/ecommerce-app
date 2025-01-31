@@ -3,6 +3,7 @@ import AddProduct from "../../views/seller/AddProduct";
 import AllProduct from "../../views/seller/AllProduct";
 import DiscountProduct from "../../views/seller/DiscountProduct";
 import EditProduct from "../../views/seller/EditProduct";
+import OrderDetails from "../../views/seller/OrderDetails";
 import Orders from "../../views/seller/Orders";
 import Payments from "../../views/seller/Payments";
 import Profile from "../../views/seller/Profile";
@@ -49,6 +50,12 @@ const sellerRoutes = [
   {
     path: "/seller/dashboard/orders",
     element: <Orders />,
+    role: "seller",
+    ability: ["active", "deactive"],
+  },
+  {
+    path: "/seller/dashboard/order/details/:orderId",
+    element: <OrderDetails />,
     role: "seller",
     ability: ["active", "deactive"],
   },
