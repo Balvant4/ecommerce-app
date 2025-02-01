@@ -7,6 +7,7 @@ import { admin_login } from "../../store/Reducers/authReducer";
 import { PropagateLoader } from "react-spinners";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import MainButton from "../../components/MainButton";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -28,14 +29,6 @@ const AdminLogin = () => {
     e.preventDefault();
     // Dispatch action with state as payload
     dispatch(admin_login(state));
-  };
-
-  const overrideStyle = {
-    display: "flex",
-    margin: "0 auto",
-    height: "24px",
-    justifyContent: "center",
-    alignItem: "center",
   };
 
   useEffect(() => {
@@ -77,16 +70,7 @@ const AdminLogin = () => {
             onChange={inputHandle}
           />
           {/* Submit Button */}
-          <button
-            disabled={loader ? true : false}
-            className="w-full px-4 py-3 text-white font-medium bg-indigo-500 rounded-lg hover:bg-indigo-600 transition duration-300"
-          >
-            {loader ? (
-              <PropagateLoader color="#fff" cssOverride={overrideStyle} />
-            ) : (
-              "Login"
-            )}
-          </button>
+          <MainButton text="Login" loader={loader} className="my-4" />
         </form>
       </div>
     </div>

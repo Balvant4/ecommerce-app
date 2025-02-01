@@ -1,14 +1,26 @@
 import React from "react";
+import { PropagateLoader } from "react-spinners";
 
-function MainButton({ text, className, onChange, onClick }) {
+function MainButton({ text, className, onClick, loader }) {
+  const overrideStyle = {
+    display: "flex",
+    margin: "0 auto",
+    height: "24px",
+    justifyContent: "center",
+    alignItem: "center",
+  };
   return (
     <button
       onClick={onClick}
-      onChange={onChange}
+      disabled={loader}
       type="submit"
-      className={` px-4 py-3 text-white font-medium bg-indigo-700 rounded-lg hover:bg-indigo-900 transition duration-300 ${className}`}
+      className={`w-full px-4 py-3 text-white font-medium bg-indigo-500 rounded-lg hover:bg-indigo-600 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
     >
-      {text}
+      {loader ? (
+        <PropagateLoader color="#fff" cssOverride={overrideStyle} />
+      ) : (
+        text
+      )}
     </button>
   );
 }

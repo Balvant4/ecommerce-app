@@ -3,8 +3,10 @@ import Input from "../../components/Input";
 import SocialButtons from "../../components/SocialButton";
 import { MdEmail, MdLock, MdPerson } from "react-icons/md";
 import MainButton from "../../components/MainButton";
-
+import { useSelector } from "react-redux";
 const Register = () => {
+  const { loader } = useSelector((state) => state.auth);
+
   const [state, setState] = useState({ name: "", email: "", password: "" });
 
   const inputHandle = (e) => {
@@ -48,7 +50,7 @@ const Register = () => {
             value={state.password}
             onChange={inputHandle}
           />
-          <MainButton text="Sign Up" className=" w-full" />
+          <MainButton text="Sign Up" loader={loader} className="my-4" />
         </form>
         <p className="mt-6 text-sm text-center text-gray-600">
           Already have an account?{" "}
