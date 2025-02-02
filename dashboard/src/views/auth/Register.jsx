@@ -3,8 +3,11 @@ import Input from "../../components/Input";
 import SocialButtons from "../../components/SocialButton";
 import { MdEmail, MdLock, MdPerson } from "react-icons/md";
 import MainButton from "../../components/MainButton";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { seller_register } from "../../store/Reducers/authReducer";
+
 const Register = () => {
+  const dispatch = useDispatch();
   const { loader } = useSelector((state) => state.auth);
 
   const [state, setState] = useState({ name: "", email: "", password: "" });
@@ -16,7 +19,7 @@ const Register = () => {
 
   const submit = (e) => {
     e.preventDefault();
-    console.log(state);
+    dispatch(seller_register(state));
   };
 
   return (
