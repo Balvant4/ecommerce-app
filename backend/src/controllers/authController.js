@@ -1,9 +1,10 @@
-import { Admin } from "../models/auth.model.js";
+import { Admin, Seller } from "../models/auth.model.js";
 import ApiError from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import bcrypt from "bcryptjs";
 import createToken from "../utils/createToken.js";
+import { sellerCustomer } from "../models/chat/sellerCustomerModel.js";
 
 const adminLogin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -50,8 +51,56 @@ const adminLogin = asyncHandler(async (req, res) => {
 
   res.status(response.statusCode).json(response);
 });
-
 //END METHOD
+
+const sellerRegister = asyncHandler(async (req, res) => {
+  const { name, email, password } = req.body;
+
+  if (!name || !email || !password) {
+    throw new ApiError(400, "All fields are required");
+  }
+
+  const existedUser = await Seller.findOne({ email });
+  if (existedUser) {
+    throw new ApiError(404, "Email is already reagistered");
+  }
+
+  const hasedPassword = await bcrypt.hash(password, 10);
+
+  const user = await Seller.create({
+    name,
+    email,
+    password: hasedPassword,
+    method: "menualy",
+    shopInfo: {},
+  });
+
+  await sellerCustomer.create({
+    myId: user.id,
+  });
+
+  const token = await createToken({
+    id: user.id,
+    role: user.role,
+  });
+  res.cookie("authToken", token, {
+    httpOnly: true, // Prevents access by JavaScript
+    secure: process.env.NODE_ENV === "production", // Sends cookie over HTTPS in production
+    sameSite: "strict", // Protects against CSRF
+    maxAge: 24 * 60 * 60 * 1000, // Cookie validity (1 day)
+  });
+
+  const createdUser = await Seller.findById(user.id).select("-password");
+
+  if (!createdUser) {
+    throw new ApiError(500, "Something went wrong while creating seller");
+  }
+
+  return res
+    .status(201)
+    .json(new ApiResponse(200, createdUser, "User registered Successfully"));
+});
+
 const getUser = asyncHandler(async (req, res) => {
   const { id, role } = req;
   if (role == "admin") {
@@ -62,4 +111,4 @@ const getUser = asyncHandler(async (req, res) => {
   }
 });
 
-export { adminLogin, getUser };
+export { adminLogin, sellerRegister, getUser };

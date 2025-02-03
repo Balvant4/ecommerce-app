@@ -4,7 +4,6 @@ import { MdEmail, MdLock } from "react-icons/md";
 import logo from "../../../public/images/logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { admin_login } from "../../store/Reducers/authReducer";
-import { PropagateLoader } from "react-spinners";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import MainButton from "../../components/MainButton";
