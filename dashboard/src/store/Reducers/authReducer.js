@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../api/api";
 
-//Login
+// Admin Login
 
 export const admin_login = createAsyncThunk(
   "auth/admin_login",
@@ -24,6 +24,23 @@ export const seller_register = createAsyncThunk(
   async (info, { rejectWithValue }) => {
     try {
       const { data } = await api.post("/seller-register", info, {
+        withCredentials: true,
+      });
+      return data;
+    } catch (error) {
+      const errorMessage = error.response?.data || "Something went wrong";
+      return rejectWithValue(errorMessage); // Ensure error message is returned
+    }
+  }
+);
+
+// Seller Login
+
+export const seller_login = createAsyncThunk(
+  "auth/seller_login",
+  async (info, { rejectWithValue }) => {
+    try {
+      const { data } = await api.post("/seller-login", info, {
         withCredentials: true,
       });
       return data;
@@ -66,6 +83,19 @@ export const authReducer = createSlice({
         state.userInfo = action.payload;
       })
       .addCase(admin_login.rejected, (state, action) => {
+        state.isLoading = false;
+        state.errorMessage = action.payload;
+      })
+
+      // Seller Login
+      .addCase(seller_login.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(seller_login.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.userInfo = action.payload;
+      })
+      .addCase(seller_login.rejected, (state, action) => {
         state.isLoading = false;
         state.errorMessage = action.payload;
       });

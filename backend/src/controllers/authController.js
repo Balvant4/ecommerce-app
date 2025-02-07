@@ -101,6 +101,53 @@ const sellerRegister = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, createdUser, "Userss registered Successfully"));
 });
 
+const sellerLogin = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+
+  // Validate input fields
+  if (!email || !password) {
+    throw new ApiError(400, "Email and password are required");
+  }
+
+  // Find seller by email
+  const seller = await Seller.findOne({ email }).select("+password");
+
+  if (!seller) {
+    return res
+      .status(400)
+      .json(new ApiResponse(400, null, "Signup First for Login"));
+  }
+
+  // Compare hashed password
+  const isPasswordValid = await bcrypt.compare(password, seller.password);
+  if (!isPasswordValid) {
+    return res.status(400).json(new ApiResponse(400, null, "Invalid Password"));
+  }
+
+  // Generate authentication token
+  const token = await createToken({ id: seller.id, role: seller.role });
+
+  // Set secure authentication cookie
+  res.cookie("authToken", token, {
+    httpOnly: true, // Prevents JavaScript access (XSS protection)
+    secure: process.env.NODE_ENV === "production", // Sends cookie only over HTTPS in production
+    sameSite: "strict", // Protects against CSRF
+    maxAge: 24 * 60 * 60 * 1000, // Cookie valid for 1 day
+  });
+
+  // Remove password from seller object before sending response
+  const sellerData = {
+    id: seller._id,
+    email: seller.email,
+    name: seller.name,
+  };
+
+  // Send response
+  return res
+    .status(200)
+    .json(new ApiResponse(200, sellerData, "Seller Login Successful"));
+});
+
 const getUser = asyncHandler(async (req, res) => {
   const { id, role } = req;
   if (role == "admin") {
@@ -111,4 +158,4 @@ const getUser = asyncHandler(async (req, res) => {
   }
 });
 
-export { adminLogin, sellerRegister, getUser };
+export { adminLogin, sellerRegister, sellerLogin, getUser };

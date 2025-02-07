@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   adminLogin,
   getUser,
+  sellerLogin,
   sellerRegister,
 } from "../controllers/authController.js";
 import authMiddleware from "../middlewares/authMiddleware.js";
@@ -15,5 +16,6 @@ authrouter.route("/get-user").get(authMiddleware, getUser);
 authrouter
   .route("/seller-register")
   .post(validate(sellerRegisterSchema), sellerRegister);
+authrouter.route("/seller-login").post(sellerLogin);
 
 export default authrouter;

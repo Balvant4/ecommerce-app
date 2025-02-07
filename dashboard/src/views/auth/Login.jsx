@@ -1,10 +1,18 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Input from "../../components/Input";
 import SocialButtons from "../../components/SocialButton";
 import { MdEmail, MdLock } from "react-icons/md";
 import MainButton from "../../components/MainButton";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { seller_login } from "../../store/Reducers/authReducer";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { userInfo, loader, errorMessage } = useSelector((state) => state.auth);
   const [state, setState] = useState({ email: "", password: "" });
 
   const inputHandle = useCallback((e) => {
@@ -14,8 +22,21 @@ const Login = () => {
 
   const submit = (e) => {
     e.preventDefault();
-    console.log(state);
+    dispatch(seller_login(state));
   };
+
+  useEffect(() => {
+    if (userInfo?.message) {
+      toast.success(userInfo.message);
+      navigate("/seller/dashboard");
+    }
+    if (errorMessage?.errors) {
+      toast.error(errorMessage.errors);
+    }
+    if (errorMessage?.message) {
+      toast.error(errorMessage.message);
+    }
+  }, [userInfo, errorMessage]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-400 via-indigo-500 to-purple-500">
