@@ -1,16 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "../../components/Input";
 import SocialButtons from "../../components/SocialButton";
 import { MdEmail, MdLock, MdPerson } from "react-icons/md";
 import MainButton from "../../components/MainButton";
 import { useDispatch, useSelector } from "react-redux";
 import { seller_register } from "../../store/Reducers/authReducer";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const dispatch = useDispatch();
-  const { loader } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const { userInfo, loader, errorMessage } = useSelector((state) => state.auth);
 
   const [state, setState] = useState({ name: "", email: "", password: "" });
+
+  useEffect(() => {
+    if (userInfo?.message) {
+      toast.success(userInfo.message);
+      navigate("/seller/dashboard");
+    }
+    if (errorMessage?.errors) {
+      toast.error(errorMessage.errors);
+    }
+    if (errorMessage?.message) {
+      toast.error(errorMessage.message);
+    }
+  }, [userInfo, errorMessage]);
 
   const inputHandle = (e) => {
     const { name, value } = e.target;

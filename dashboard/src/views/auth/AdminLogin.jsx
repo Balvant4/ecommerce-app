@@ -3,17 +3,16 @@ import Input from "../../components/Input"; // Reusing Input component
 import { MdEmail, MdLock } from "react-icons/md";
 import logo from "../../../public/images/logo.png";
 import { useDispatch, useSelector } from "react-redux";
-import { admin_login } from "../../store/Reducers/authReducer";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import MainButton from "../../components/MainButton";
+import { admin_login } from "../../store/Reducers/authReducer";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { loader, errorMessage, successMessage } = useSelector(
-    (state) => state.auth
-  );
+
+  const { userInfo, loader, errorMessage } = useSelector((state) => state.auth);
   // State initialization
   const [state, setState] = useState({ email: "", password: "" });
 
@@ -31,14 +30,17 @@ const AdminLogin = () => {
   };
 
   useEffect(() => {
-    if (errorMessage) {
-      toast.error(errorMessage);
+    if (userInfo?.message) {
+      toast.success(userInfo.message);
+      navigate("/admin/dashboard");
     }
-    if (successMessage) {
-      toast.success(successMessage);
-      navigate("/");
+    if (errorMessage?.errors) {
+      toast.error(errorMessage.errors);
     }
-  }, [errorMessage, successMessage]);
+    if (errorMessage?.message) {
+      toast.error(errorMessage.message);
+    }
+  }, [userInfo, errorMessage]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-400 via-indigo-500 to-purple-500">

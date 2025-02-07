@@ -17,7 +17,7 @@ const adminLogin = asyncHandler(async (req, res) => {
   // Find admin by email
   const admin = await Admin.findOne({ email });
   if (!admin) {
-    throw new ApiError(404, "Admin not found");
+    return res.status(400).json(new ApiResponse(400, null, "Admin not found"));
   }
 
   // Compare passwords
@@ -32,8 +32,6 @@ const adminLogin = asyncHandler(async (req, res) => {
   });
 
   res.cookie("authToken", token, {
-    httpOnly: true, // Prevents access by JavaScript
-    secure: process.env.NODE_ENV === "production", // Sends cookie over HTTPS in production
     sameSite: "strict", // Protects against CSRF
     maxAge: 24 * 60 * 60 * 1000, // Cookie validity (1 day)
   });
@@ -62,7 +60,9 @@ const sellerRegister = asyncHandler(async (req, res) => {
 
   const existedUser = await Seller.findOne({ email });
   if (existedUser) {
-    throw new ApiError(404, "Email is already reagistered");
+    return res
+      .status(400)
+      .json(new ApiResponse(400, null, "Email already exists"));
   }
 
   const hasedPassword = await bcrypt.hash(password, 10);
@@ -98,7 +98,7 @@ const sellerRegister = asyncHandler(async (req, res) => {
 
   return res
     .status(201)
-    .json(new ApiResponse(200, createdUser, "User registered Successfully"));
+    .json(new ApiResponse(200, createdUser, "Userss registered Successfully"));
 });
 
 const getUser = asyncHandler(async (req, res) => {

@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../api/api";
 
+//Login
+
 export const admin_login = createAsyncThunk(
   "auth/admin_login",
   async (info, { rejectWithValue }) => {
@@ -8,12 +10,10 @@ export const admin_login = createAsyncThunk(
       const { data } = await api.post("/admin-login", info, {
         withCredentials: true,
       });
-      // console.log(data);
-      localStorage.setItem("accessToken", data.message.token);
-
-      return data; // Pass data to the fulfilled case
+      return data;
     } catch (error) {
-      return rejectWithValue(error.response.data); // Pass error to the rejected case
+      const errorMessage = error.response?.data || "Something went wrong";
+      return rejectWithValue(errorMessage); // Ensure error message is returned
     }
   }
 );
@@ -23,16 +23,13 @@ export const seller_register = createAsyncThunk(
   "auth/seller_register",
   async (info, { rejectWithValue }) => {
     try {
-      console.log(info);
       const { data } = await api.post("/seller-register", info, {
         withCredentials: true,
       });
-      console.log(data);
-      // localStorage.setItem("accessToken", data.message.token);
-
-      return data; // Pass data to the fulfilled case
+      return data;
     } catch (error) {
-      return rejectWithValue(error.response.data); // Pass error to the rejected case
+      const errorMessage = error.response?.data || "Something went wrong";
+      return rejectWithValue(errorMessage); // Ensure error message is returned
     }
   }
 );
@@ -40,26 +37,37 @@ export const seller_register = createAsyncThunk(
 export const authReducer = createSlice({
   name: "auth",
   initialState: {
-    successMessage: "",
+    message: "",
     errorMessage: "",
-    loader: false,
-    userInfo: "",
+    isLoading: false,
+    userInfo: null,
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(seller_register.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(seller_register.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.userInfo = action.payload;
+      })
+      .addCase(seller_register.rejected, (state, action) => {
+        state.isLoading = false;
+        state.errorMessage = action.payload;
+      })
+
+      // Admin Login
       .addCase(admin_login.pending, (state) => {
-        state.loader = true; // Start loader
-        state.errorMessage = ""; // Clear previous errors
+        state.isLoading = true;
       })
-      .addCase(admin_login.fulfilled, (state, { payload }) => {
-        state.loader = false; // Stop loader
-        state.userInfo = payload; // Store user info if needed
-        state.successMessage = "Login successful!"; // Optional success message
+      .addCase(admin_login.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.userInfo = action.payload;
       })
-      .addCase(admin_login.rejected, (state, { payload }) => {
-        state.loader = false; // Stop loader
-        state.errorMessage = payload?.error || "Invalid Password!";
+      .addCase(admin_login.rejected, (state, action) => {
+        state.isLoading = false;
+        state.errorMessage = action.payload;
       });
   },
 });
